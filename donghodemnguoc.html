@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Văn bản quy phạm pháp luật</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 200px 20px;
+            padding-top: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .question-block {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .question-title {
+            font-weight: bold;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .options li {
+            margin-bottom: 8px;
+        }
+        .options label {
+            display: block;
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .options label:hover {
+            background: #f0f0f0;
+        }
+        .options input {
+            margin-right: 10px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #27ae60;
+            color: #fff;
+            border: none;
+            font-size: 1.2em;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: #219653;
+        }
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: #e8f8f5;
+            border-left: 5px solid #2cc36b;
+            display: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+        }
+        .correct {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724;
+        }
+        .incorrect {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Luyện Tập: Văn Bản Quy Phạm Pháp Luật</h1>
+    <form id="quizForm">
+        <div id="quiz-container"></div>
+        <button type="button" onclick="checkAnswers()">Nộp bài và xem kết quả</button>
+    </form>
+    <div id="resultBox" class="result"></div>
+</div>
+
+<script>
+    const quizData = [
+        { id: 101, q: "Đặc điểm của văn bản quy phạm pháp luật là:", a: ["Tính cá biệt", "Tự phát", "Chứa quy phạm pháp luật và mang tính bắt buộc chung", "Có yếu tố đạo đức"], correct: 2 },
+        { id: 102, q: "Văn bản quy phạm pháp luật được ban hành bởi:", a: ["Mọi công dân", "Báo chí", "Cơ quan nhà nước có thẩm quyền", "Cơ sở kinh doanh"], correct: 2 },
+        { id: 103, q: "Một văn bản được gọi là “quy phạm” khi:", a: ["Chỉ điều chỉnh cá nhân cụ thể", "Có tính bắt buộc chung, áp dụng nhiều lần", "Được truyền miệng", "Được viết tay"], correct: 1 },
+        { id: 104, q: "Văn bản quy phạm pháp luật là nguồn chính thức của pháp luật ở Việt Nam vì:", a: ["Dễ tiếp cận", "Chỉ hình thức này được thừa nhận chính thức trong hệ thống pháp luật", "Có dấu đỏ", "Được soạn thảo dài"], correct: 1 },
+        { id: 105, q: "Các loại văn bản quy phạm pháp luật do Quốc hội ban hành gồm:", a: ["Hiến pháp, luật, pháp lệnh", "Hiến pháp, luật, nghị quyết", "Nghị định, quyết định", "Công văn, hướng dẫn"], correct: 1 },
+        { id: 106, q: "Nghị quyết của Quốc hội có giá trị pháp lý như thế nào?", a: ["Không bắt buộc", "Tùy chọn áp dụng", "Có giá trị như luật trong phạm vi cụ thể", "Chỉ mang tính chất định hướng"], correct: 2 },
+        { id: 107, q: "Thủ tướng Chính phủ có quyền ban hành văn bản nào sau đây?", a: ["Hiến pháp", "Bộ luật", "Quyết định", "Luật chuyên ngành"], correct: 2 },
+        { id: 108, q: "Bộ trưởng có thể ban hành văn bản gì?", a: ["Nghị quyết", "Thông tư", "Luật", "Pháp lệnh"], correct: 1 },
+        { id: 109, q: "Hội đồng nhân dân cấp tỉnh có quyền ban hành:", a: ["Quyết định hành chính", "Nghị quyết", "Luật", "Công điện"], correct: 1 },
+        { id: 110, q: "Văn bản nào có giá trị pháp lý cao nhất trong hệ thống pháp luật Việt Nam?", a: ["Luật", "Hiến pháp", "Pháp lệnh", "Nghị định"], correct: 1 },
+        { id: 111, q: "Văn bản của Chính phủ có giá trị pháp lý thấp hơn văn bản nào?", a: ["Quyết định của Bộ trưởng", "Luật của Quốc hội", "Công văn của Bộ", "Hướng dẫn địa phương"], correct: 1 },
+        { id: 112, q: "Hiệu lực của văn bản pháp luật theo thời gian có nghĩa là:", a: ["Từ thời điểm có hiệu lực đến khi bị thay thế/hủy bỏ", "Mãi mãi", "Tùy ý cơ quan ban hành", "Có hiệu lực từ ngày ký"], correct: 0 },
+        { id: 113, q: "Văn bản quy phạm pháp luật chỉ có hiệu lực khi:", a: ["Có chữ ký", "Có đóng dấu", "Được công bố đúng quy định", "Được chấp thuận bởi Bộ Tư pháp"], correct: 2 },
+        { id: 114, q: "Việc áp dụng văn bản quy phạm pháp luật phải tuân theo:", a: ["Phán đoán cá nhân", "Tập quán", "Nguyên tắc pháp chế XHCN", "Chủ trương"], correct: 2 },
+        { id: 115, q: "Văn bản nào sau đây do Chủ tịch nước ban hành?", a: ["Luật", "Pháp lệnh", "Lệnh, quyết định", "Nghị quyết"], correct: 2 },
+        { id: 116, q: "Văn bản nào có hiệu lực pháp lý cao hơn?", a: ["Thông tư", "Nghị định", "Quyết định", "Luật"], correct: 3 },
+        { id: 117, q: "Văn bản nào có thể bị đình chỉ thi hành nếu trái với pháp luật?", a: ["Mọi văn bản quy phạm pháp luật", "Chỉ thông tư", "Nghị định", "Hiến pháp"], correct: 0 },
+        { id: 118, q: "Cơ quan kiểm tra văn bản quy phạm pháp luật có thẩm quyền kiến nghị gì?", a: ["Tăng quyền hạn", "Bãi bỏ hoặc đình chỉ văn bản trái pháp luật", "Ban hành văn bản mới", "Giải thích luật"], correct: 1 },
+        { id: 119, q: "Thứ tự ưu tiên áp dụng nếu có mâu thuẫn giữa các văn bản pháp luật là:", a: ["Văn bản mới > Văn bản cũ", "Văn bản của Bộ > Văn bản của Chính phủ", "Hiệu lực pháp lý cao hơn > Cùng cấp thì văn bản mới hơn", "Văn bản dài hơn"], correct: 2 },
+        { id: 120, q: "Thông tư liên tịch là văn bản do:", a: ["Một bộ ban hành", "Từ hai cơ quan nhà nước trở lên cùng ban hành", "Chính phủ", "Chủ tịch nước"], correct: 1 },
+        { id: 121, q: "Hiệu lực không gian của văn bản pháp luật là:", a: ["Vùng miền nơi ban hành", "Nơi có dân cư đông", "Phạm vi lãnh thổ áp dụng văn bản đó", "Quốc tế"], correct: 2 },
+        { id: 122, q: "Một nghị định mới mâu thuẫn với luật hiện hành thì áp dụng:", a: ["Nghị định", "Luật vì có hiệu lực pháp lý cao hơn", "Công văn hướng dẫn", "Ý kiến chuyên gia"], correct: 1 },
+        { id: 123, q: "Văn bản quy phạm pháp luật cấp tỉnh không được trái với:", a: ["Văn bản hướng dẫn", "Hiến pháp, luật và nghị định của Chính phủ", "Chủ trương địa phương", "Nghị quyết xã"], correct: 1 },
+        { id: 124, q: "Thời điểm văn bản quy phạm pháp luật có hiệu lực là:", a: ["Khi ký", "Khi thông qua", "Ngày được công bố, hoặc ngày ghi rõ trong văn bản", "Ngày gửi đi"], correct: 2 },
+        { id: 125, q: "Một văn bản không chứa quy phạm pháp luật thì:", a: ["Không được coi là văn bản quy phạm pháp luật", "Vẫn là luật", "Có giá trị tương đương nghị định", "Được tự áp dụng"], correct: 0 },
+        { id: 126, q: "Trách nhiệm kiểm tra, rà soát văn bản quy phạm pháp luật thuộc về:", a: ["Quốc hội", "Văn phòng chính phủ", "Cơ quan ban hành và Bộ Tư pháp", "Công an"], correct: 2 },
+        { id: 127, q: "Nếu một thông tư của Bộ Y tế trái với luật Dược thì xử lý thế nào?", a: ["Vẫn áp dụng", "Bị đình chỉ, sửa đổi hoặc bãi bỏ", "Vô hiệu", "Hủy toàn bộ"], correct: 1 },
+        { id: 128, q: "Luật chỉ có thể được sửa đổi, bổ sung bởi:", a: ["Bộ trưởng", "Chính phủ", "Quốc hội", "Chủ tịch nước"], correct: 2 },
+        { id: 129, q: "Tình huống: Một quy định trong quyết định của UBND tỉnh yêu cầu công dân đóng phí không có căn cứ pháp luật. Việc này vi phạm nguyên tắc nào?", a: ["Tự chủ tài chính", "Chính quyền địa phương", "Ban hành văn bản vượt thẩm quyền và trái pháp luật", "Trách nhiệm công dân"], correct: 2 },
+        { id: 130, q: "Văn bản nào dưới đây KHÔNG phải là văn bản quy phạm pháp luật?", a: ["Luật", "Thông tư", "Công văn chỉ đạo nội bộ", "Nghị quyết HĐND"], correct: 2 }
+    ];
+
+    const container = document.getElementById('quiz-container');
+
+    quizData.forEach((item, index) => {
+        const block = document.createElement('div');
+        block.className = 'question-block';
+        block.id = `q-block-${item.id}`;
+
+        const title = document.createElement('div');
+        title.className = 'question-title';
+        title.innerText = `Câu ${item.id}: ${item.q}`;
+        block.appendChild(title);
+
+        const optionsList = document.createElement('ul');
+        optionsList.className = 'options';
+
+        item.a.forEach((option, oIndex) => {
+            const li = document.createElement('li');
+            const label = document.createElement('label');
+            label.id = `label-${item.id}-${oIndex}`;
+            
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = `question-${item.id}`;
+            radio.value = oIndex;
+
+            label.appendChild(radio);
+            label.appendChild(document.createTextNode(option));
+            li.appendChild(label);
+            optionsList.appendChild(li);
+        });
+
+        block.appendChild(optionsList);
+        container.appendChild(block);
+    });
+
+    function checkAnswers() {
+        let score = 0;
+        quizData.forEach((item) => {
+            const selected = document.querySelector(`input[name="question-${item.id}"]:checked`);
+            
+            // Reset styles
+            item.a.forEach((_, oIndex) => {
+                document.getElementById(`label-${item.id}-${oIndex}`).className = '';
+            });
+
+            // Tô màu đáp án đúng
+            document.getElementById(`label-${item.id}-${item.correct}`).className = 'correct';
+
+            if (selected) {
+                const answerIndex = parseInt(selected.value);
+                if (answerIndex === item.correct) {
+                    score++;
+                } else {
+                    // Tô màu đáp án sai người dùng chọn
+                    document.getElementById(`label-${item.id}-${answerIndex}`).className = 'incorrect';
+                }
+            }
+        });
+
+        const resultBox = document.getElementById('resultBox');
+        resultBox.style.display = 'block';
+        resultBox.innerText = `Kết quả của bạn: ${score} / ${quizData.length} câu đúng.`;
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
